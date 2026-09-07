@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>280W-Tap Meter</title>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #303030;
+            background-image:
+                linear-gradient(#3d3d3d 1px, transparent 1px),
+                linear-gradient(90deg, #3d3d3d 1px, transparent 1px),
+                linear-gradient(#4a4a4a 1px, transparent 1px),
+                linear-gradient(90deg, #4a4a4a 1px, transparent 1px);
+            background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
+            background-position: center center;
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+        }
+
+        /* Simple loading text */
+        #loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: #0D47A1;
+            font-family: sans-serif;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .loader {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            animation: spin 8s linear infinite;
+        }
+
+        .drop-container {
+            position: absolute;
+            top: 0;
+            left: 44px;
+            width: 12px;
+            height: 50px;
+            transform-origin: 6px 50px;
+        }
+
+        .raindrop {
+            width: 12px;
+            height: 12px;
+            background-color: #4FC3F7;
+            border-radius: 0 50% 50% 50%;
+            transform: rotate(45deg);
+            animation: pulse 1.2s infinite ease-in-out;
+            box-shadow: 0 0 8px rgba(79, 195, 247, 0.6);
+        }
+
+        .drop-container:nth-child(1) {
+            transform: rotate(0deg);
+        }
+
+        .drop-container:nth-child(2) {
+            transform: rotate(45deg);
+        }
+
+        .drop-container:nth-child(3) {
+            transform: rotate(90deg);
+        }
+
+        .drop-container:nth-child(4) {
+            transform: rotate(135deg);
+        }
+
+        .drop-container:nth-child(5) {
+            transform: rotate(180deg);
+        }
+
+        .drop-container:nth-child(6) {
+            transform: rotate(225deg);
+        }
+
+        .drop-container:nth-child(7) {
+            transform: rotate(270deg);
+        }
+
+        .drop-container:nth-child(8) {
+            transform: rotate(315deg);
+        }
+
+        .drop-container:nth-child(1) .raindrop {
+            animation-delay: 0s;
+        }
+
+        .drop-container:nth-child(2) .raindrop {
+            animation-delay: 0.15s;
+        }
+
+        .drop-container:nth-child(3) .raindrop {
+            animation-delay: 0.3s;
+        }
+
+        .drop-container:nth-child(4) .raindrop {
+            animation-delay: 0.45s;
+        }
+
+        .drop-container:nth-child(5) .raindrop {
+            animation-delay: 0.6s;
+        }
+
+        .drop-container:nth-child(6) .raindrop {
+            animation-delay: 0.75s;
+        }
+
+        .drop-container:nth-child(7) .raindrop {
+            animation-delay: 0.9s;
+        }
+
+        .drop-container:nth-child(8) .raindrop {
+            animation-delay: 1.05s;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: rotate(45deg) scale(0.5);
+            }
+
+            50% {
+                opacity: 1;
+                transform: rotate(45deg) scale(1.2);
+            }
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        #loading-text {
+            z-index: 10;
+            margin-top: 30px;
+            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loading">
+        <div class="loader">
+            <div class="drop-container">
+                <div class="raindrop"></div>
+            </div>
+            <div class="drop-container">
+                <div class="raindrop"></div>
+            </div>
+            <div class="drop-container">
+                <div class="raindrop"></div>
+            </div>
+            <div class="drop-container">
+                <div class="raindrop"></div>
+            </div>
+            <div class="drop-container">
+                <div class="raindrop"></div>
+            </div>
+            <div class="drop-container">
+                <div class="raindrop"></div>
+            </div>
+            <div class="drop-container">
+                <div class="raindrop"></div>
+            </div>
+            <div class="drop-container">
+                <div class="raindrop"></div>
+            </div>
+        </div>
+        <div id="loading-text">Loading 3D Model...</div>
+    </div>
+
+    <!-- The viewer points to the closed cap model initially -->
+    <model-viewer id="meterViewer"
+        src="https://firebasestorage.googleapis.com/v0/b/meterviewingproject.firebasestorage.app/o/closecap.glb?alt=media&token=8b24c96a-ca01-4f9b-983c-183810099b4c"
+        camera-controls auto-rotate shadow-intensity="0">
+    </model-viewer>
+
+    <script>
+        const viewer = document.getElementById('meterViewer');
+        const loadingContainer = document.getElementById('loading');
+        const loadingText = document.getElementById('loading-text');
+
+        let isModelLoaded = false;
+        let isMinTimeElapsed = false;
+
+        function tryHideLoading() {
+            if (isModelLoaded && isMinTimeElapsed) {
+                loadingContainer.style.transition = 'opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                loadingContainer.style.opacity = '0';
+                setTimeout(() => {
+                    loadingContainer.style.display = 'none';
+                    if (window.ModelViewerChannel) {
+                        window.ModelViewerChannel.postMessage('loading_finished');
+                    }
+                }, 500);
+            }
+        }
+
+        viewer.addEventListener('load', () => {
+            isModelLoaded = true;
+            tryHideLoading();
+
+            if (viewer.model && viewer.model.materials) {
+                for (const material of viewer.model.materials) {
+                    try {
+                        material.alphaMode = 'OPAQUE';
+                    } catch (e) {
+                        console.error("Could not set alphaMode for material", material.name);
+                    }
+                }
+            }
+        });
+
+        // 400ms minimum loader display so loader doesn't flicker
+        setTimeout(() => {
+            isMinTimeElapsed = true;
+            tryHideLoading();
+        }, 400);
+
+        viewer.addEventListener('progress', (event) => {
+            const progress = parseInt(event.detail.totalProgress * 100);
+            loadingText.innerText = `Loading 3D Model... ${progress}%`;
+        });
+
+        viewer.addEventListener('error', (error) => {
+            loadingText.innerText = 'Error loading model! Please check URL or CORS.';
+            console.error(error);
+            if (window.ModelViewerChannel) {
+                window.ModelViewerChannel.postMessage('loading_finished');
+            }
+        });
+
+        // Function called from Flutter to toggle models
+        function setCapMode(mode) {
+            loadingContainer.style.transition = 'none';
+            loadingContainer.style.display = 'flex';
+            loadingContainer.style.opacity = '1';
+            void loadingContainer.offsetWidth; // Force reflow
+            loadingText.innerText = `Loading 3D Model... 0%`;
+            if (window.ModelViewerChannel) {
+                window.ModelViewerChannel.postMessage('loading_started');
+            }
+
+            isModelLoaded = false;
+            isMinTimeElapsed = false;
+
+            setTimeout(() => {
+                isMinTimeElapsed = true;
+                tryHideLoading();
+            }, 400);
+
+            setTimeout(() => {
+                if (mode === 'open') {
+                    viewer.src = "https://firebasestorage.googleapis.com/v0/b/meterviewingproject.firebasestorage.app/o/opencap.glb?alt=media&token=5e99168a-35c4-4f43-a1a5-6871973569c7";
+                } else {
+                    viewer.src = "https://firebasestorage.googleapis.com/v0/b/meterviewingproject.firebasestorage.app/o/closecap.glb?alt=media&token=8b24c96a-ca01-4f9b-983c-183810099b4c";
+                }
+            }, 50);
+        }
+    </script>
+</body>
+
+</html>
