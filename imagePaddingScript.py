@@ -2,7 +2,7 @@ import sys
 from PIL import Image
 
 try:
-    img = Image.open('assets/logo.png')
+    img = Image.open('MODEL_ASSET_LOCATION')
     
     # We want a square image with a generous margin to fit in the safe zone.
     # The original width is 1024. Let's make the new canvas 1536x1536.
@@ -15,7 +15,7 @@ try:
     
     new_img.paste(img, (paste_x, paste_y))
     
-    new_img.save('assets/logo_square.png')
+    new_img.save('MODEL_ASSET_LOCATION')
     print("Success")
 except Exception as e:
     print(f"Error: {e}")
