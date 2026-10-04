@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>280W-Tap Meter</title>
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    <script type="module" src="FIREBASE_LINK"></script>
     <style>
         body,
         html {
@@ -201,7 +201,7 @@
 
     <!-- The viewer points to the closed cap model initially -->
     <model-viewer id="meterViewer"
-        src="https://firebasestorage.googleapis.com/v0/b/meterviewingproject.firebasestorage.app/o/closecap.glb?alt=media&token=8b24c96a-ca01-4f9b-983c-183810099b4c"
+        src="FIREBASE_LINK"
         camera-controls auto-rotate shadow-intensity="0">
     </model-viewer>
 
@@ -281,9 +281,9 @@
 
             setTimeout(() => {
                 if (mode === 'open') {
-                    viewer.src = "https://firebasestorage.googleapis.com/v0/b/meterviewingproject.firebasestorage.app/o/opencap.glb?alt=media&token=5e99168a-35c4-4f43-a1a5-6871973569c7";
+                    viewer.src = "FIREBASE_LINK";
                 } else {
-                    viewer.src = "https://firebasestorage.googleapis.com/v0/b/meterviewingproject.firebasestorage.app/o/closecap.glb?alt=media&token=8b24c96a-ca01-4f9b-983c-183810099b4c";
+                    viewer.src = "FIREBASE_LINK";
                 }
             }, 50);
         }
