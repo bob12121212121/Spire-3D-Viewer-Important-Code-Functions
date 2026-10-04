@@ -9,7 +9,7 @@ import qrcode
 # Native cameras see "WIFI:", try to find the network name (which is empty "S:;"), 
 # and silently give up without showing a "Text Found" popup. 
 # Your Flutter app will read the whole string and find your link at the end!
-payload = "WIFI:S:;T:nopass;P:;H:true;;spire.com/meter/280w-tap"
+payload = "MODEL_WIFI_LOGIN_QR_CODE"
 
 # Configure the QR Code appearance and error correction
 qr = qrcode.QRCode(
